@@ -29,7 +29,7 @@ resource roleDef 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview' = 
       }
     ]
     assignableScopes: [
-      subscription().id
+      '/'
     ]
   }
 }
