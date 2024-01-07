@@ -17,7 +17,14 @@ module acr 'modules/acr.bicep' = {
   }
 }
 
+module customRoleDefinitions 'modules/customroledefinitions.bicep' = {
+  name: 'Deploy-Custom-RoleDefinitions'
+}
+
 module roleAssignments 'modules/roleassignments.bicep' = {
   scope: acrResourceGroup
   name: 'Deploy-Role-Assignments'
+  params: {
+    deploymentsWriterRoleDefnitionId: customRoleDefinitions.outputs.roleDefinitionId
+  }
 }
