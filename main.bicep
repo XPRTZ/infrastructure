@@ -25,6 +25,6 @@ module roleAssignments 'modules/roleassignments.bicep' = {
   scope: acrResourceGroup
   name: 'Deploy-Role-Assignments'
   params: {
-    deploymentsWriterRoleDefnitionId: customRoleDefinitions.outputs.roleDefinitionId
+    deploymentsWriterRoleDefinitionId: customRoleDefinitions.outputs.roleDefinitionId
   }
 }
