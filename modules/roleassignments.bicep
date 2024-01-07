@@ -8,5 +8,6 @@ resource rbacAdminAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01
   properties: {
     principalId: developersServicePrincipleId
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', rbacAdminRoleDefinitionId)
+    principalType: 'ServicePrincipal'
   }
 }
