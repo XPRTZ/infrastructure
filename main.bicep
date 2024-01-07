@@ -16,3 +16,8 @@ module acr 'modules/acr.bicep' = {
     location: location
   }
 }
+
+module roleAssignments 'modules/roleassignments.bicep' = {
+  scope: acrResourceGroup
+  name: 'Deploy-Role-Assignments'
+}
