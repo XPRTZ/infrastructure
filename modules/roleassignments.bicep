@@ -41,3 +41,12 @@ resource acrPushRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-
     deploymentsWriterAssignment
   ]
 }
+
+resource pipelinePushRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: acrResource
+  name: guid('428dcc9b-5316-48f7-b1b3-462ba91a5754', acrPushRoleDefinitionId, acrResource.id)
+  properties: {
+    principalId: '428dcc9b-5316-48f7-b1b3-462ba91a5754'
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', acrPushRoleDefinitionId)
+  }
+}
