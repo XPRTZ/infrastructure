@@ -23,15 +23,26 @@ module acr 'modules/acr.bicep' = {
   }
 }
 
-module customRoleDefinitions 'modules/customroledefinitions.bicep' = {
-  name: 'deployCustomRoleDefinitions'
+module deploymentsWriterRoleDefinitions 'modules/customroledefinitions.bicep' = {
+  name: 'deployDeploymentsWriterRoleDefinitions'
+}
+
+module infrastructureRoleDefinitions 'modules/customroledefinitions.bicep' = {
+  name: 'deployInfrastructureRoleDefinitions'
+  params: {
+    actions: [
+      'Microsoft.Resources/deployments/write'
+      'Microsoft.Cdn/*/write'
+      'Microsoft.Network/dnsZones/*/write'
+    ]
+  }
 }
 
 module acrRoleAssignments 'modules/roleassignments.bicep' = {
   scope: acrResourceGroup
   name: 'deployAcrRoleAssignments'
   params: {
-    deploymentsWriterRoleDefinitionId: customRoleDefinitions.outputs.roleDefinitionId
+    deploymentsWriterRoleDefinitionId: deploymentsWriterRoleDefinitions.outputs.roleDefinitionId
   }
 }
 
@@ -39,7 +50,7 @@ module infrastuctureRoleAssignments 'modules/roleassignments.bicep' = {
   scope: infrastructureResourceGroup
   name: 'deployInfrastuctureRoleAssignments'
   params: {
-    deploymentsWriterRoleDefinitionId: customRoleDefinitions.outputs.roleDefinitionId
+    deploymentsWriterRoleDefinitionId: infrastructureRoleDefinitions.outputs.roleDefinitionId
   }
 }
 
