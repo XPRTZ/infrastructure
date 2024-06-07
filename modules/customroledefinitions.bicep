@@ -9,10 +9,7 @@ param actions array = [
 param notActions array = []
 
 @description('Friendly name of the role definition')
-param roleName string = 'Custom Role - Deployments Writer'
-
-@description('Detailed description of the role definition')
-param roleDescription string = 'Subscription Level Deployment of a Custom Role Definition to be able to write deployments'
+param roleName string
 
 var roleDefName = guid(subscription().id, string(actions), string(notActions))
 
@@ -20,7 +17,6 @@ resource roleDef 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview' = 
   name: roleDefName
   properties: {
     roleName: roleName
-    description: roleDescription
     type: 'customRole'
     permissions: [
       {

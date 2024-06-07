@@ -25,11 +25,15 @@ module acr 'modules/acr.bicep' = {
 
 module deploymentsWriterRoleDefinitions 'modules/customroledefinitions.bicep' = {
   name: 'deployDeploymentsWriterRoleDefinitions'
+  params: {
+    roleName: 'Custom Role - Deployments Writer'
+  }
 }
 
 module infrastructureRoleDefinitions 'modules/customroledefinitions.bicep' = {
   name: 'deployInfrastructureRoleDefinitions'
   params: {
+    roleName: 'Custom Role - Infrastructure Writer'
     actions: [
       'Microsoft.Resources/deployments/write'
       'Microsoft.Cdn/*/write'
