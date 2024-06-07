@@ -27,9 +27,17 @@ module customRoleDefinitions 'modules/customroledefinitions.bicep' = {
   name: 'deployCustomRoleDefinitions'
 }
 
-module roleAssignments 'modules/roleassignments.bicep' = {
+module acrRoleAssignments 'modules/roleassignments.bicep' = {
   scope: acrResourceGroup
-  name: 'deployRoleAssignments'
+  name: 'deployAcrRoleAssignments'
+  params: {
+    deploymentsWriterRoleDefinitionId: customRoleDefinitions.outputs.roleDefinitionId
+  }
+}
+
+module infrastuctureRoleAssignments 'modules/roleassignments.bicep' = {
+  scope: acrResourceGroup
+  name: 'deployInfrastuctureRoleAssignments'
   params: {
     deploymentsWriterRoleDefinitionId: customRoleDefinitions.outputs.roleDefinitionId
   }
