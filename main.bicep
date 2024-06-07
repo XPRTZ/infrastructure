@@ -23,15 +23,38 @@ module acr 'modules/acr.bicep' = {
   }
 }
 
-module customRoleDefinitions 'modules/customroledefinitions.bicep' = {
-  name: 'deployCustomRoleDefinitions'
+module deploymentsWriterRoleDefinitions 'modules/customroledefinitions.bicep' = {
+  name: 'deployDeploymentsWriterRoleDefinitions'
+  params: {
+    roleName: 'Custom Role - Deployments Writer'
+  }
 }
 
-module roleAssignments 'modules/roleassignments.bicep' = {
-  scope: acrResourceGroup
-  name: 'deployRoleAssignments'
+module infrastructureRoleDefinitions 'modules/customroledefinitions.bicep' = {
+  name: 'deployInfrastructureRoleDefinitions'
   params: {
-    deploymentsWriterRoleDefinitionId: customRoleDefinitions.outputs.roleDefinitionId
+    roleName: 'Custom Role - Infrastructure Writer'
+    actions: [
+      'Microsoft.Resources/deployments/write'
+      'Microsoft.Cdn/*/write'
+      'Microsoft.Network/dnsZones/*/write'
+    ]
+  }
+}
+
+module acrRoleAssignments 'modules/roleassignments.bicep' = {
+  scope: acrResourceGroup
+  name: 'deployAcrRoleAssignments'
+  params: {
+    deploymentsWriterRoleDefinitionId: deploymentsWriterRoleDefinitions.outputs.roleDefinitionId
+  }
+}
+
+module infrastuctureRoleAssignments 'modules/roleassignments.bicep' = {
+  scope: infrastructureResourceGroup
+  name: 'deployInfrastuctureRoleAssignments'
+  params: {
+    deploymentsWriterRoleDefinitionId: infrastructureRoleDefinitions.outputs.roleDefinitionId
   }
 }
 
