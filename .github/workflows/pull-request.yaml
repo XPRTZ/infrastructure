@@ -1,0 +1,43 @@
+name: Pull request
+run-name: Pull request build for ${{ github.head_ref }}
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  BICEP_FILE: ./main.bicep
+
+jobs:
+  verify-bicep-files:
+    name: Validate Bicep files
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build Bicep files
+        uses: Azure/cli@v2
+        with:
+          inlineScript: az bicep build --file ${{ env.BICEP_FILE }}
+
+      - name: Validate Bicep deployment on subscription level
+        uses: Azure/cli@v2
+        with:
+          inlineScript: |
+            az deployment sub validate \
+              --name validate-${{ github.run_id }} \
+              --template-file ${{ env.BICEP_FILE }} \
+              --location westeurope
