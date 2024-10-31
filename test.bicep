@@ -20,6 +20,6 @@ module acs 'modules/communication-services.bicep' = {
   scope: infrastructureResourceGroup
   params: {
     name: 'acs-xprtzbv'
-    location: location
+    location: 'global'
   }
 }

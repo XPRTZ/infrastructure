@@ -6,6 +6,5 @@ resource acs 'Microsoft.Communication/communicationServices@2023-04-01' = {
   location: location
    properties: {
      dataLocation: 'Europe'
-      linkedDomains: [ 'xprtz.dev' ]
    }
 }
